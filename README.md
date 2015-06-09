@@ -1,1 +1,1 @@
-Catch Pokemons with Node.js. Demo: http://pokenode.herokuapp.com/
+Phaer + nodejs +websockets  http://phasernode.herokuapp.com/
