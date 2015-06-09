@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Gamepad</title>
+		<meta name="description" content="Phasernode by Sylvaim Hamann">
+		<link type="text/css" rel="stylesheet" href="./css/style.css">
+		<meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0 minimal-ui" />
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="true" />	
+	</head>
+	<body>
+		<section id="gamepad">
+		  <div id="left" class="button"><img src="./assets/arrow-left.png" alt="Left"></div>		  
+		  <div id="right" class="button"><img src="./assets/arrow-right.png" alt="Right"></div>
+		  <div id="up" class="button"><img src="./assets/arrow-up.png" alt="up"></div>
+		</section>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io.connect('http://phasernode.herokuapp.com');		  
+		  var room = '';
+		  socket.on('errorRoom', function (data) {
+		    alert('Error!');
+			socket.disconnect();
+		  });
+		  socket.on('closeRoom', function (data) {
+		    alert('Connection lost!');
+			socket.disconnect();
+		  });
+		  socket.on('roomJoined', function (data) {
+		    room = data.room;
+		  });
+		  var left = document.getElementById('left');
+		  var right = document.getElementById('right');
+		  var up = document.getElementById('up');
+		  
+		  if (left.addEventListener) left.addEventListener('touchstart', function() {event.preventDefault(); gamepadMove('left')}, false);
+		  if (left.addEventListener) left.addEventListener('touchend', function() {gamepadMove('stop')}, false);
+		  if (right.addEventListener) right.addEventListener('touchstart', function() {event.preventDefault(); gamepadMove('right')}, false);
+		  if (right.addEventListener) right.addEventListener('touchend', function() {gamepadMove('stop')}, false);
+		  if (up.addEventListener) up.addEventListener('touchstart', function() {event.preventDefault(); gamepadMove('up')}, false);
+		  
+		  function gamepadMove(direction) {	  
+		    socket.emit('gamepadMove',{'direction': direction});
+		  }		  
+
+		</script>
+	</body>
+</html>
